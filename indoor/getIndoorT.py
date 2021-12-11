@@ -68,12 +68,14 @@ for i in range(8):
  
 tmp = humidity + humidity_point + temperature + temperature_point		#十进制的数据相加
  
-#if check == tmp:								#数据校验，相等则输出
+if check == tmp:								#数据校验，相等则输出
 	#print("temperature : ", temperature, ", humidity : " , humidity)
-#else:										#错误输出错误信息，和校验数据
+    print("I T/RH:", temperature, "°C /", humidity, "%");
+else:                                           #错误输出错误信息，和校验数据
+    print()
 	#print("wrong")
 	#print("temperature : ", temperature, ", humidity : " , humidity, " check : ", check, " tmp : ", tmp)
 
-print("I T/RH:", temperature, "°C /", humidity, "%");
+#print("I T/RH:", temperature, "°C /", humidity, "%");
 
 GPIO.cleanup()									#重置针
