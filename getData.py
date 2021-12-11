@@ -64,7 +64,7 @@ while True:
 
     # Shell scripts for system monitoring from here:
     # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
-    cmd = "/bin/bash /home/pi/work/getData.sh"
+    cmd = "/bin/bash /home/pi/Weather-Pi/getData.sh"
     re = os.popen(cmd).readlines()
     result = []
     for i in range(0, len(re)):  # 由于原始结果需要转换编码，所以循环转为utf8编码并且去除\n换行
