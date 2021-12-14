@@ -9,12 +9,14 @@
 import time
 import subprocess
 import os
+import signal
 
 from board import SCL, SDA
 import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 
+signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
 # Create the I2C interface.
 i2c = busio.I2C(SCL, SDA)
@@ -57,6 +59,29 @@ font = ImageFont.load_default()
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
 # font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
 
+for num in range(1,8):    
+    draw.rectangle((0, 0, width, height), outline=0, fill=0)
+    draw.text((x, top + 0), "Zhao's PI", font=font, fill=255)
+    draw.text((x, top + 8), "Starting up...", font=font, fill=255)
+    draw.text((x, top + 16), "...init...", font=font, fill=255)
+    draw.text((x, top + 25), "Time: " + str(12 - num), font=font, fill=255)
+    disp.image(image)
+    disp.show()
+    time.sleep(1)
+
+#开机自启后尝试更新天气
+os.system('/usr/bin/bash /home/pi/Weather-Pi/outdoor/getOutdoor.sh &')
+
+for num in range(8,12):    
+    draw.rectangle((0, 0, width, height), outline=0, fill=0)
+    draw.text((x, top + 0), "Zhao's PI", font=font, fill=255)
+    draw.text((x, top + 8), "Starting up...", font=font, fill=255)
+    draw.text((x, top + 16), "...update...", font=font, fill=255)
+    draw.text((x, top + 25), "Time: " + str(12 - num), font=font, fill=255)
+    disp.image(image)
+    disp.show()
+    time.sleep(1)
+
 while True:
 
     # Draw a black filled box to clear the image.
@@ -64,7 +89,7 @@ while True:
 
     # Shell scripts for system monitoring from here:
     # https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
-    cmd = "/bin/bash /home/pi/Weather-Pi/getData.sh"
+    cmd = "/bin/bash /home/pi/Weather-Pi/getData.sh &"
     re = os.popen(cmd).readlines()
     result = []
     for i in range(0, len(re)):  # 由于原始结果需要转换编码，所以循环转为utf8编码并且去除\n换行
